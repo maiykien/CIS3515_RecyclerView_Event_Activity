@@ -9,12 +9,23 @@ import androidx.recyclerview.widget.RecyclerView
 // TODO(Step 1: Implement click behavior)
 
 // TODO (Step 1a: Accept lambda in constructor)
-class NumberDisplayAdapter (private val numbers: Array<Int>) : RecyclerView.Adapter<NumberDisplayAdapter.NumberViewHolder>() {
+class NumberDisplayAdapter (private val numbers: Array<Int>, private val onClick: (Int) -> Unit) : RecyclerView.Adapter<NumberDisplayAdapter.NumberViewHolder>() {
 
     // TODO (Step 1b: Invoke lambda via onClickListener)
-    inner class NumberViewHolder (layout: View) : RecyclerView.ViewHolder (layout) {
+    inner class NumberViewHolder (val layout: View) : RecyclerView.ViewHolder (layout) {
         // enumerate views inside layout
-        val textView = layout.findViewById<TextView>(R.id.textView)
+        val textView = layout.findViewById<TextView>(R.id.textView).apply {
+            setOnClickListener { onClick(numbers[adapterPosition])}
+        }
+
+        /*
+        // This part will be add on it.
+        init {
+            layout.setOnClickListener {
+                onClick(numbers[adapterPosition])
+            }
+        }
+        */
 
     }
 
@@ -22,11 +33,11 @@ class NumberDisplayAdapter (private val numbers: Array<Int>) : RecyclerView.Adap
 
         val layout = LayoutInflater.from(parent.context).inflate(R.layout.textview_layout, parent, false)
         return NumberViewHolder(layout)
+
     }
 
-    override fun getItemCount(): Int {
-        return numbers.size
-    }
+    override fun getItemCount()  = numbers.size
+
 
     override fun onBindViewHolder(holder: NumberViewHolder, position: Int) {
         holder.textView.text = numbers[position].toString()
